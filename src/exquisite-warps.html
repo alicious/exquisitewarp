@@ -15,53 +15,10 @@
 
 <script src="../../node_modules/redux/dist/redux.js"></script>
 <script src="../../node_modules/freezer-js/build/freezer.min.js"></script>
+<script src="stubModel.js"></script>
 <link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
 
 <script>
-    var stubModel = {
-        lastWarpId : 2,
-        currentWarps : [
-            {
-                id: 0,
-                title: "a string of ice and fire",
-                weavers: ["Arya", "Bodric", "Cersei", "Davos"],
-                ends: 3200,
-                currentTurn: 7,
-                maxPalette: 12,
-                palette: ["#FFFFFF", "#dab10b", "#608613", "#212121", "#000000"],
-            }, 
-            {
-                id: 1,
-                title: "Moore Kids",
-                weavers: ["Bella", "Lyra", "Hazel"],
-                ends: [42, 52, 23],
-                subWarps: [ 
-                {
-                    maxPalette: 8,
-                    palette: ["#cfbeac", "#d27822", "#312726", "#ffffff"],
-                    colorPlan: [
-                    [0, 1, 2, 1, 0, 1, 2, 1, 2, 2, 1, 0, 0, 0],
-                    [2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1],
-                    [3, 2, 3, 2, 3, 2, 1, 1, 0, 0, 1, 0, 2, 0],
-                    ],
-                },
-                {
-                    maxPalette: 12,
-                    palette: ["#1a9463", "#dc5c75", "#557840", "#9a9949", 
-                    "#b72d69", "#bd0102", "#df8773", "#e4e6d8", "bc5256"],
-                    colorPlan: [
-                    [0, 1, 2, 1, 5, 0, 4, 1, 2, 1, 3, 2, 2, 1, 0, 0, 0],
-                    [2, 2, 2, 6, 1, 1, 1, 7, 2, 2, 2, 1, 8, 1, 1, 1, 1],
-                    ],
-                }, 
-                ],
-                currentTurn: {
-                    subWarp: 1,
-                    round: 1,
-                },
-            }, 
-        ] };
-
 
   var frozen = new Freezer( stubModel );
 
@@ -75,17 +32,7 @@
       case 'ADD_WARP':
           var nextId = state.lastWarpId + 1;
           state = state.set( 'lastWarpId', nextId );
-          state.pendingWarps.push(
-              {
-                  id: nextId,
-                  title: action.title,
-                  weavers: [],
-                  ends: [],
-                  currentTurn: 0,
-                  maxPalette: action.maxPalette,
-                  palette: [],
-              }
-          )
+          state.currentWarps.push(createWarp(nextId, action.title, action.weaverCount));
           break;
       case 'SET_COLOR':
           state.currentWarps[action.warpId].palette.set(action.paletteId, action.color);
@@ -93,6 +40,26 @@
       }
 
       return frozen.get();
+      function createWarp(id, title, weaverCount) {
+          var invites = [];
+          for (i = 0; i < weaverCount; i++) {
+              invites.push({
+                  id: i, //BUG: id should be random
+                  accepted: false
+              });
+          }
+          return {
+              id: id,
+              title: title,
+              admin: 31337,
+              invites: invites,
+              subWarps: [ ],
+              currentTurn: {
+                  subWarp: 0,
+                  round: 0,
+              },
+          };
+      }
     });
 
   var ReduxBehavior = new PolymerRedux(store);
@@ -182,6 +149,7 @@
           <my-new-warp name="new-warp"></my-new-warp>
           <my-about name="about"></my-about>
           <my-warp-editor name="warp-editor" warp-id="{{warp-to-edit.id}}"></my-warp-editor>
+          <my-weaver-registration name="weaver-registration"></my-weaver-registration>
         </iron-pages>
 
       </app-header-layout>

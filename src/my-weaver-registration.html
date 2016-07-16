@@ -5,7 +5,7 @@
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 
-<dom-module id="weaver-registration">
+<dom-module id="my-weaver-registration">
 
   <template>
 
@@ -27,9 +27,10 @@
       <paper-card>
 
       <div class="card-content">
-          <paper-input id="name" label="weaver name" name="weaver-name"></paper-input>
-          <div>maximum colors in your subwarp:</div>
+          <paper-input id="weaver-name" label="weaver name" name="weaver-name"></paper-input>
+          <div>maximum palette size for your piece:</div>
           <paper-slider id="color-count" snaps editable min="2" max="40" value="12"></paper-slider>
+          <div>number of ends in your piece:</div>
           <paper-slider id="end-count" snaps editable min="30" max="1000" value="700"></paper-slider>
       </div>
       
@@ -46,7 +47,7 @@
 
     Polymer({
 
-        is: 'weaver-registration',
+        is: 'my-weaver-registration',
         behaviors: [ ReduxBehavior ],
         actions: {
             add: function ( title, weaverCount, colorCount) {

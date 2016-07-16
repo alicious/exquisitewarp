@@ -28,7 +28,8 @@
     "paper-slider": "PolymerElements/paper-slider#^1.0.11",
     "paper-swatch-picker": "^1.0.1",
     "iron-icons": "PolymerElements/iron-icons#^1.1.3",
-    "polymer-redux": "tur-nr/polymer-redux"
+    "polymer-redux": "tur-nr/polymer-redux",
+    "paper-dialog": "PolymerElements/paper-dialog#^1.0.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

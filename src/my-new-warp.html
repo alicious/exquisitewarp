@@ -36,12 +36,10 @@
                 <paper-radio-button name="3">3</paper-radio-button>
                 <paper-radio-button name="4">4</paper-radio-button>
               </paper-radio-group>
-              <div>maximum colors per warp:</div>
-              <paper-slider id="color-count" snaps editable min="2" max="20" value="12"></paper-slider>
           </div>
           <div class="card-actions">
 
-              <paper-button on-tap="addWarp">Generate</paper-button>
+              <paper-button on-tap="addWarp">Generate Invites</paper-button>
         </div>
       </paper-card>
           </form>
@@ -55,12 +53,11 @@
         is: 'my-new-warp',
         behaviors: [ ReduxBehavior ],
         actions: {
-            add: function ( title, weaverCount, colorCount) {
+            add: function ( title, weaverCount) {
                 return   {
                     type       : 'ADD_WARP',
                     title      : title,
                     weaverCount: weaverCount,
-                    maxPalette : colorCount,
                 }
                 
             }
@@ -68,9 +65,8 @@
         addWarp : function ( ) {
             var title       = this.$['title'].value;
             var weaverCount = this.$['weaver-count'].selected;
-            var colorCount  = this.$['color-count'].value;
 
-            this.dispatch('add', title, weaverCount, colorCount );
+            this.dispatch('add', title, weaverCount);
         },
     
     });
